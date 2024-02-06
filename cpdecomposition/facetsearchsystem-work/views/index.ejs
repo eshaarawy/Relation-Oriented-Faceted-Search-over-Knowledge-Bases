@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>DBpedia</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>DBpedia Faceted Search</h1>
+
+    <form action="/" method="get">
+      
+      <div class="search">
+        <ul>
+          <li>Keyword:  
+            <input type="text" name="Keyword" value= "<%= keyword %>" required> on 
+            <input type="radio" name="Focus" value="Subject" required <% if(focus == "Subject"){ %> checked <% } %>> Subject 
+            <input type="radio" name="Focus" value="Object" <% if(focus == "Object"){ %> checked <% } %>> Object 
+          </li>
+        </ul>
+
+        <% if(keyword != null){ %>
+          <ul>
+            <li>Predicate Type:
+              <select name='PropertyFacets'>
+              <option value="-">-</option>
+                <% for(var i in propertyfacet){ %>
+                  <% var cluster = propertyfacet[i]; %>
+                  <option value= "<%= cluster.type %>" <% if( cluster.type == predicatetype ){ %> selected <% } %>> <%= cluster.type %> (<%= cluster.cnt %>)</option>
+                <% } %>
+              </select>
+            </li>
+          </ul>
+        <% } %>
+            <p><button type="submit" class="btn-square">Search</button></p>
+      </div>
+
+    </form>
+
+      <div class="condition">
+        <% if(keyword){ %>
+          <h3>**Search Condition**</h3>
+          <ul>
+            <li><b>Keyword</b>: "<%= keyword %>" on "<%= focus %>"</li>
+          </ul>
+        <% } %>
+        <% if(subjecttype != null && predicatetype != null && objecttype != null) { %>
+          <ul>
+            <li><b>Subject Type</b>: [<%= subjecttype %>]</li>
+            <li><b>Predicate Type</b>: [<%= predicatetype %>]</li>
+            <li><b>Object Type</b>: [<%= objecttype %>]</li>
+          </ul>
+        <% } %>
+        <% if(content == "NO RESULTS") { %>
+        <div class="nothing">
+          <ul>
+            <li><%= content %></li>
+          </ul>
+        </div>
+        <% }else if(content != null){ %>
+          <ul>
+            <li><b>Matching Triples</b>: <%= rowCount %> (Showing Top <%= content.length %> records)</li>
+          </ul>
+            <table border="1" cellspacing="0">
+              <tr>
+                <th class="no">No.</th>
+                <th class="subject">Subject</th>
+                <th class="predicate">Predicate</th>
+                <th class="object">Object</th>
+              </tr>
+            <% for(var i = 0; i < content.length; i++){ %>
+              <tr>
+                <td><%= i + 1 %></td>
+                <% var row = content[i]; %>
+                <% var subjecturi = row.subject; %>
+                <% var propertyuri = row.property; %>
+                <% var objecturi = row.object; %>
+
+                <% if(subjecturi.indexOf('http://dbpedia.org/') !== -1){ %>
+                  <% var subjecturi = new URL(subjecturi); %>
+                  <% var subject = decodeURIComponent(subjecturi.pathname.split('/').pop()); %>
+                <% }else{ %>
+                  <% var subject = subjecturi;%>
+                <% } %>
+
+                <% if(propertyuri.indexOf('#') !== -1){ %>
+                  <% var propertyuri = new URL(propertyuri); %>
+                  <% var property = decodeURIComponent(propertyuri['hash']); %>
+                <% }else{ %>
+                  <% var propertyuri = new URL(propertyuri); %>
+                  <% var property = decodeURIComponent(propertyuri.pathname.split('/').pop()); %>
+                <% } %>  
+
+                <% if(objecturi.indexOf('http://dbpedia.org/') !== -1){ %>
+                  <% var objecturi = new URL(objecturi); %>
+                  <% var object = decodeURIComponent(objecturi.pathname.split('/').pop()); %>
+                <% }else{ %>
+                  <% var object = objecturi; %>
+                <% } %>
+
+                <td><a href="<%= row.subject %>"><%= subject %></a></td>
+                <td><a href="<%= row.property %>"><%= property %></a></td>
+                <td><a href="<%= row.object %>"><%= object %></a></td>
+              </tr>
+            <% } %>
+            </table>
+        <% } %>
+      </div>
+
+  </body>
+</html>

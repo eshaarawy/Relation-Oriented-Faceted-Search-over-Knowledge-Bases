@@ -1,0 +1,86 @@
+body {
+    padding: 50px;
+    font: 15px "Lucida Grande", Helvetica, Arial, sans-serif;
+  }
+  
+  a {
+    color: #0000FF;
+  }
+  
+  ul {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-justify-content: flex-start;
+    justify-content: flex-start;
+    list-style-type: none;
+  }
+  ul li {
+    display: inline-block;
+    margin-left: 1em;
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+  }　
+  
+  .search {
+    display: inline-block;
+    padding: 0.5em 1rem;
+    margin: 0.5em;
+  }
+  
+  .btn-square{
+    display: block;
+    font-size: 1em;
+    padding: 0.5em 1em;
+    margin-top: 1.5em;
+    margin-left: 3.5em;
+    text-decoration: none;
+    background: #0080FF;/*ボタン色*/
+    color: #FFF;
+    border-bottom: solid 4px #627295;
+    border-radius: 3px;
+  }
+  
+  .btn-square:active {
+    /*ボタンを押したとき*/
+    -webkit-transform: translateY(4px);
+    transform: translateY(4px);/*下に動く*/
+    border-bottom: none;/*線を消す*/
+  }
+  
+  .condition {
+    font-size: 1.0em;
+    margin: 0.5em;
+    float: left;
+  }
+  
+  .nothing {
+    float: left;
+    text-decoration: underline;
+  }
+  
+  table,th,td {
+    border: 1px solid #333;
+  }
+  
+  table {
+    table-layout: fixed;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  th,td {
+    border-collapse: collapse;
+    overflow: scroll;
+    white-space: nowrap;
+    /*text-align: center;*/
+  }
+  
+  th.no{
+    width:3%;
+  }
+  
+  th.predicate{
+    width:30%;
+  }
+  
+  
